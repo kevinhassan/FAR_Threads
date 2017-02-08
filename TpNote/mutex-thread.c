@@ -6,7 +6,7 @@
 #include <time.h>
 //#include <sys/types.h> // for gettid() (linux)
 
-int NB_THREADS = 10;
+int NB_THREADS = 10000;
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -24,10 +24,11 @@ void *Fils (void *t) {
   tmp ++;
   // Pour faire attendre le processus
   randomTime = rand() % 3;
-  sleep(randomTime);
+  //sleep(randomTime);
   somme = tmp;
   printf("Fils %d : somme = %d \n", i, somme); 
   // ends the thread so that it doesn't come back in the main
+  pthread_mutex_unlock(&mutex);
   pthread_exit(0);
 }
 
@@ -39,11 +40,13 @@ int main (int argc, char ** argv) {
     printf ("Père : somme = %d\n", somme);
     //
   	for (i=0;i<NB_THREADS;i++) { 
-		if  (pthread_create (&tid, NULL, Fils,NULL) != 0) {
-      		printf("pthread_create\n"); exit (1);
- 	    }
- 	    else {Threads_id[i] = tid;}
-    }
+      pthread_mutex_lock(&mutex);
+		    if  (pthread_create (&tid, NULL, Fils,NULL) != 0) {
+      		  printf("pthread_create\n"); 
+            exit (1);
+ 	      }
+ 	      else {Threads_id[i] = tid;}
+      }
     // Main thread itself could access the shared variable
     // with mutex manipulation:
     // ...
