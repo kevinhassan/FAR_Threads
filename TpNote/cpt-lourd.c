@@ -2,7 +2,7 @@
 #include <stdio.h> 
 #include <unistd.h> 
 #include <pthread.h> 
-#define NB_PROCESSUS 500 
+#define NB_PROCESSUS 10000	 
 
 int pid, i, somme ;
 int main()
@@ -17,7 +17,6 @@ int main()
 		  exit(0) ; 
 		}
 	}
-
 	while ( wait(0) != -1) { } ;
 	printf("processus père : somme = %d \n", somme) ; 
 	printf("Pid : %d \n", getpid());

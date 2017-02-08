@@ -2,7 +2,7 @@
 #include <stdio.h> 
 #include <unistd.h> 
 #include <pthread.h> 
-#define NB_THREADS 500 
+#define NB_THREADS 10000 
 int somme=0;
 void * Fils(void *t) {
 	int i= (long)t;	
